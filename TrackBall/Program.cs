@@ -12,11 +12,12 @@ namespace TrackBall
 {
     class Program
     {
-        MouseListener gay = new MouseListener(); 
+        
 
         [STAThread]
         static void Main(string[] args)
         {
+            MouseListener gay = new MouseListener(); 
             gay.Activate();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
