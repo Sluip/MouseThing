@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpDX.RawInput;
 using MouseKeyboardActivityMonitor;
 using MouseKeyboardActivityMonitor.WinApi;
 
@@ -12,15 +13,20 @@ namespace TrackBall
     class MouseListener
     {
         private MouseHookListener m_mouseListener;
+        private Device m_mouseDevice;
         private int g;
         public void Activate()
         {
             // Note: for an application hook, use the AppHooker class instead
             m_mouseListener = new MouseHookListener(new GlobalHooker());
-
             // The listener is not enabled by default
             m_mouseListener.Enabled = true;
 
+            List<DeviceInfo> devices = Device.GetDevices();
+            foreach (DeviceInfo s in devices)
+            {
+                Console.WriteLine(s.DeviceName + ", " + s.DeviceType);
+            }
             // Set the event handler
             // recommended to use the Extended handlers, which allow input suppression among other additional information
             m_mouseListener.MouseDownExt += MouseListener_MouseDownExt;
@@ -44,7 +50,7 @@ namespace TrackBall
         private void MouseListener_MouseMoveExt(object sender, MouseEventExtArgs e)
         {
 
-            Console.WriteLine("Fuck off {0}", g);
+            //Console.WriteLine("Fuck off {0}", g);
         }
     }
 
