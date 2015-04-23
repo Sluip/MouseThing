@@ -24,8 +24,8 @@ namespace TrackBall
             m_mouseListener.Enabled = true;
             List<DeviceInfo> devices = Device.GetDevices();
 
-            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.None);
-            Device.MouseInput += (object sender, MouseInputEventArgs e) => MouseEvent(e);
+            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.InputSink);
+            Device.MouseInput += (sender, e) => MouseEvent(e);
             Device.RawInput += (object sender, RawInputEventArgs e) => RawEvent(e);
             foreach (DeviceInfo s in devices)
             {
