@@ -12,6 +12,7 @@ namespace TrackBall
     class MouseListener
     {
         private MouseHookListener m_mouseListener;
+        private int g;
         public void Activate()
         {
             // Note: for an application hook, use the AppHooker class instead
@@ -42,7 +43,8 @@ namespace TrackBall
         }
         private void MouseListener_MouseMoveExt(object sender, MouseEventExtArgs e)
         {
-            Console.WriteLine("Fuck off");
+
+            Console.WriteLine("Fuck off {0}", g);
         }
     }
 
