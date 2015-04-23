@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharpDX.RawInput;
+using SharpDX.Multimedia;
 using MouseKeyboardActivityMonitor;
 using MouseKeyboardActivityMonitor.WinApi;
 
@@ -21,11 +22,14 @@ namespace TrackBall
             m_mouseListener = new MouseHookListener(new GlobalHooker());
             // The listener is not enabled by default
             m_mouseListener.Enabled = true;
-
             List<DeviceInfo> devices = Device.GetDevices();
+
+            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.None);
+            Device.MouseInput += (object sender, MouseInputEventArgs e) => MouseEvent(e);
+            Device.RawInput += (object sender, RawInputEventArgs e) => RawEvent(e);
             foreach (DeviceInfo s in devices)
             {
-                Console.WriteLine(s.DeviceName + ", " + s.DeviceType);
+                Console.WriteLine(s.Handle + ", " + s.ToString());
             }
             // Set the event handler
             // recommended to use the Extended handlers, which allow input suppression among other additional information
@@ -38,6 +42,15 @@ namespace TrackBall
             m_mouseListener.Dispose();
         }
 
+        static void MouseEvent(RawInputEventArgs e)
+        {
+            var a = (MouseInputEventArgs)e;
+            Console.WriteLine(a.Device);
+        }
+        static void RawEvent(RawInputEventArgs e)
+        {
+            Console.WriteLine(e.Device);
+        }
         private void MouseListener_MouseDownExt(object sender, MouseEventExtArgs e)
         {
             // log the mouse click
@@ -47,6 +60,7 @@ namespace TrackBall
             // uncommenting the following line with suppress a middle mouse button click
             // if (e.Buttons == MouseButtons.Middle) { e.Handled = true; }
         }
+
         private void MouseListener_MouseMoveExt(object sender, MouseEventExtArgs e)
         {
 
