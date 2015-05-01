@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using SharpDX.RawInput;
-using SharpDX.Multimedia;
 using MouseKeyboardActivityMonitor;
 using MouseKeyboardActivityMonitor.WinApi;
 using System.Runtime.InteropServices;
+using RawInput_dll;
 
 namespace TrackBall
 {
@@ -16,7 +16,6 @@ namespace TrackBall
     {
         private MouseHookListener m_mouseListener;
         private KeyboardHookListener m_keyboard;
-        private Device m_mouseDevice;
         private int g;
         private bool thing;
         [DllImport("user32.dll", EntryPoint = "FindWindowEx")]
@@ -29,48 +28,44 @@ namespace TrackBall
         {
             thing = false;
             // Note: for an application hook, use the AppHooker class instead
-            m_mouseListener = new MouseHookListener(new GlobalHooker());
+            //m_mouseListener = new MouseHookListener(new GlobalHooker());
             // The listener is not enabled by default
-            m_mouseListener.Enabled = true;
-            List<DeviceInfo> devices = Device.GetDevices();
-        
-            int hwnd = FindWindowEx(0, 0, 0, "Maya");
-            StringBuilder title = new StringBuilder(256);
-            GetWindowText(hwnd, title, 256);
-            Console.WriteLine(title);
-                if (hwnd == 0)
-                {
-                    throw new Exception("Window not found");
-                }
+            //m_mouseListener.Enabled = true;
 
-                Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.InputSink);
-            Device.MouseInput += (sender, e) => MouseEvent(e);
-            Device.RawInput += (object sender, RawInputEventArgs e) => RawEvent(e);
-            foreach (DeviceInfo s in devices)
-            {
-                Console.WriteLine(s.Handle + ", " + s.ToString());
-            }
+           // IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
+            IntPtr hwnd = WinGetHandle("Maya");
+
+            Console.WriteLine(hwnd);
+
+            RawInput rawinput = new RawInput(hwnd, false);
+            rawinput.KeyPressed += OnKeyPressed;
             // Set the event handler
             // recommended to use the Extended handlers, which allow input suppression among other additional information
-            m_mouseListener.MouseDownExt += MouseListener_MouseDownExt;
-            m_mouseListener.MouseMoveExt += MouseListener_MouseMoveExt;
+           // m_mouseListener.MouseDownExt += MouseListener_MouseDownExt;
+           // m_mouseListener.MouseMoveExt += MouseListener_MouseMoveExt;
         }
 
         public void Deactivate()
         {
             m_mouseListener.Dispose();
         }
+        public static IntPtr WinGetHandle(string wName)
+        {
+            IntPtr hWnd = IntPtr.Zero;
+            foreach (Process pList in Process.GetProcesses())
+            {
+                if (pList.MainWindowTitle.Contains(wName))
+                {
+                    hWnd = pList.MainWindowHandle;
 
-        static void MouseEvent(RawInputEventArgs e)
-        {
-            var a = (MouseInputEventArgs)e;
-            Console.WriteLine(a.Device);
+                }
+            }
+            return hWnd;
         }
-        static void RawEvent(RawInputEventArgs e)
+        private void OnKeyPressed(object s, RawInputEventArg e)
         {
-            Console.WriteLine(e.Device);
+            Console.WriteLine("hello?");
         }
-        
         private void MouseListener_MouseDownExt(object sender, MouseEventExtArgs e)
         {
             // log the mouse click
