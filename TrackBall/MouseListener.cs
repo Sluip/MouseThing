@@ -7,6 +7,7 @@ using SharpDX.RawInput;
 using SharpDX.Multimedia;
 using MouseKeyboardActivityMonitor;
 using MouseKeyboardActivityMonitor.WinApi;
+using System.Runtime.InteropServices;
 
 namespace TrackBall
 {
@@ -24,7 +25,7 @@ namespace TrackBall
             m_mouseListener.Enabled = true;
             List<DeviceInfo> devices = Device.GetDevices();
 
-            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.InputSink);
+            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.None);
             Device.MouseInput += (sender, e) => MouseEvent(e);
             Device.RawInput += (object sender, RawInputEventArgs e) => RawEvent(e);
             foreach (DeviceInfo s in devices)
@@ -61,8 +62,26 @@ namespace TrackBall
             // if (e.Buttons == MouseButtons.Middle) { e.Handled = true; }
         }
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+
+        public const uint KEYEVENTF_KEYUP = 0x02;
+        public const uint VK_ALT = 0x11;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(long dwFlags, long dx, long dy, long cButtons, long dwExtraInfo);
+
+        private const int MOUSEEVENTF_LEFTDOWN = 0x08;
+        private const int MOUSEEVENTF_LEFTUP = 0x04;
+
         private void MouseListener_MouseMoveExt(object sender, MouseEventExtArgs e)
         {
+            bool g = false;
+            if (!g)
+            {
+                mouse_event(MOUSEEVENTF_LEFTDOWN, e.X, e.Y, 0, 0);
+                g = true;
+            }
 
             //Console.WriteLine("Fuck off {0}", g);
         }
