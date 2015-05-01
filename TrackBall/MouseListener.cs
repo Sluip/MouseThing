@@ -32,13 +32,15 @@ namespace TrackBall
             // The listener is not enabled by default
             //m_mouseListener.Enabled = true;
 
-           // IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
-            IntPtr hwnd = WinGetHandle("Maya");
+           IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
+            //IntPtr hwnd = WinGetHandle("Maya");
 
-            Console.WriteLine(hwnd);
+            Console.WriteLine(hwnd.ToString());
 
             RawInput rawinput = new RawInput(hwnd, false);
+            rawinput.AddMessageFilter();
             rawinput.KeyPressed += OnKeyPressed;
+
             // Set the event handler
             // recommended to use the Extended handlers, which allow input suppression among other additional information
            // m_mouseListener.MouseDownExt += MouseListener_MouseDownExt;

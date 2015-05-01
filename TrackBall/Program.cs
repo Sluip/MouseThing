@@ -17,12 +17,11 @@ namespace TrackBall
         static void Main(string[] args)
         {
 
-            MouseListener gay = new MouseListener();
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            gay.Activate();
 
 
         }
