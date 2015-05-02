@@ -18,6 +18,7 @@ namespace TrackBall
             _rawinput.AddMessageFilter();   // Adding a message filter will cause keypresses to be handled
          // Writes a file DeviceAudit.txt to the current directory
 
+            Win32.DeviceAudit();
             _rawinput.KeyPressed += OnKeyPressed;   
         }
         private void OnKeyPressed(object s, RawInputEventArg e)
