@@ -78,7 +78,7 @@
     </Reference>
     <Reference Include="RawInput, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\rawinput latest\RawInput\obj\x86\Release\RawInput.dll</HintPath>
+      <HintPath>.\RawInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

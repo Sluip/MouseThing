@@ -13,7 +13,7 @@ namespace TrackBall
         {
             InitializeComponent();
 
-            _rawinput = new RawInput(Handle, true);
+            _rawinput = new RawInput(Handle, false);
 
             _rawinput.AddMessageFilter();   // Adding a message filter will cause keypresses to be handled
          // Writes a file DeviceAudit.txt to the current directory
@@ -23,7 +23,8 @@ namespace TrackBall
         }
         private void OnKeyPressed(object s, RawInputEventArg e)
         {
-            Debug.WriteLine("hello?");
+            if (e.KeyPressEvent.DeviceName.StartsWith(@"\\?\HID#VID_046D&PID_C52B&MI"))
+                Console.WriteLine("Fuck yeah");
         }
     }
 }

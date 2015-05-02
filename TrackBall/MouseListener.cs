@@ -66,7 +66,8 @@ namespace TrackBall
         }
         private void OnKeyPressed(object s, RawInputEventArg e)
         {
-            Console.WriteLine("hello?");
+
+
         }
         private void MouseListener_MouseDownExt(object sender, MouseEventExtArgs e)
         {
