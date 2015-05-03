@@ -45,7 +45,7 @@ namespace TrackBall
                 if (pList.MainWindowTitle.Contains(wName))
                 {
                     hWnd = pList.MainWindowHandle;
-                    Debug.WriteLine(pList.Handle);
+                    Debug.WriteLine(hWnd);
 
                 }
             }

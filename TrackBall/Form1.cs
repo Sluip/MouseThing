@@ -24,7 +24,8 @@ namespace TrackBall
             _mouseListener = new MouseListener();
 
             IntPtr hwnd = _mouseListener.WinGetHandle("Autodesk Maya 2015");
-            _rawinput = new RawInput(hwnd, true);
+
+            _rawinput = new RawInput(Handle, false);
 
             _rawinput.AddMessageFilter();   // Adding a message filter will cause keypresses to be handled
             Win32.DeviceAudit();
