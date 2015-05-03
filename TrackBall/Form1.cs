@@ -23,8 +23,6 @@ namespace TrackBall
             _rotation = true;
             _mouseListener = new MouseListener();
 
-            IntPtr hwnd = _mouseListener.WinGetHandle("Autodesk Maya 2015");
-
             _rawinput = new RawInput(Handle, false);
 
             _rawinput.AddMessageFilter();   // Adding a message filter will cause keypresses to be handled
@@ -34,7 +32,6 @@ namespace TrackBall
         }
         private void OnKeyPressed(object s, RawInputEventArg e)
         {
-            //Console.WriteLine(e.KeyPressEvent.DeviceName);
             if (e.KeyPressEvent.DeviceName.StartsWith(@"\\?\HID#VID_046D&PID_C52B&MI") && e.KeyPressEvent.Message == 0)
             {
                 if (_rotation)
@@ -49,9 +46,27 @@ namespace TrackBall
             {
                 _mouseListener.DeState(e.KeyPressEvent.MouseX, e.KeyPressEvent.MouseY);
                 _rotation = true;
-                Console.WriteLine(e.KeyPressEvent.KeyPressState);
-                
             }
+
+            //Mouse messages:
+            //0x00 = Trackball
+            //0x01 Left button down
+            //0x02 Left button up
+            //0x04 Right button down
+            //0x08 Right button up
+
+            //Scroll??
+            //Some weird ass address
+
+            //Keyboard
+            //Left alt 0x12
+            //Usage code 0x8b
+
+            //In case I ever care to work further on it:
+            //Need to figure out why hWnd isn't working when not using InputSink for custom windows
+            //Faulty way of getting hWnd? 
+
+
         }
     }
 }
