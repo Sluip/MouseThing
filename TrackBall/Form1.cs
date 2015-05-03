@@ -32,6 +32,7 @@ namespace TrackBall
         }
         private void OnKeyPressed(object s, RawInputEventArg e)
         {
+            Debug.WriteLine(e.KeyPressEvent.MouseState);
             if (e.KeyPressEvent.DeviceName.StartsWith(@"\\?\HID#VID_046D&PID_C52B&MI") && e.KeyPressEvent.Message == 0)
             {
                 if (_rotation)
@@ -40,7 +41,6 @@ namespace TrackBall
                     _rotation = false;
                 }
 
-                Console.WriteLine("Rotating you fuck");
             }
             else if (e.KeyPressEvent.DeviceName != "Global Keyboard" && !_rotation)
             {
